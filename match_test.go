@@ -1,4 +1,4 @@
-package simple_exp
+package easy_exp
 
 import (
 	"encoding/json"
