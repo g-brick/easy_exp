@@ -370,7 +370,7 @@ func throwSyntaxErr(str []rune, i int) error {
 	return errors.New(fmt.Sprintf(" Syntax Error at column %d: %s >>>%s<<<", i, string(str[int(math.Max(0, float64(i)-5)):i]), string(str[i])))
 }
 
-func Compile(expRule string) (match func(string) bool, err error) {
+func Compile(expRule string) (check func(string) bool, err error) {
 	headAst, err := buildAST(([]rune)(expRule))
 	if err != nil {
 		return
