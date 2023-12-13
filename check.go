@@ -167,16 +167,14 @@ func (r *rightParenthesis) eval(*ctx, []*ast) (ok bool) {
 	return
 }
 
-var (
-	logicOpSet = map[string]struct{}{
-		"!": {},
-		" ": {},
-		"&": {},
-		"|": {},
-		"(": {},
-		")": {},
-	}
-)
+var logicOpSet = map[string]struct{}{
+	"!": {},
+	" ": {},
+	"&": {},
+	"|": {},
+	"(": {},
+	")": {},
+}
 
 func buildAST(str []rune) (head *ast, err error) {
 	var (
