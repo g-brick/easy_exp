@@ -19,14 +19,6 @@ jobs:
       # You can test your matrix by printing the current Go version
       - name: Display Go version
         run: go version
-      - name: Go-linter
-        # You may pin to the exact commit or the version.
-        # uses: Jerome1337/golint-action@2c695d223ee85ccf25d5e5e150a1b2dbc3fc3634
-        uses: Jerome1337/golint-action@v1.0.3
-        with:
-          # Path used by golint command
-          golint-path: ./ # optional, default is ./...
-
       - name: Run coverage
         run: go test -race -coverprofile=coverage.out -covermode=atomic
       - name: Upload coverage to Codecov

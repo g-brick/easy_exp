@@ -24,7 +24,7 @@ type identifier struct {
 	name string
 }
 
-func Identifier(name string) *identifier {
+func newIdentifier(name string) *identifier {
 	return &identifier{name: name}
 }
 
@@ -41,7 +41,7 @@ type ast struct {
 	children []*ast
 }
 
-func AST(value expression, children []*ast) *ast {
+func newAST(value expression, children []*ast) *ast {
 	return &ast{
 		value:    value,
 		children: children,
@@ -83,7 +83,7 @@ func (c *ctx) include(name string) (ok bool) {
 	return strings.Contains(c.root, name)
 }
 
-func AND() *and {
+func newAND() *and {
 	return &and{
 		&property{
 			name:               "AND",
@@ -108,7 +108,7 @@ type or struct {
 	*property
 }
 
-func OR() *or {
+func newOR() *or {
 	return &or{
 		&property{
 			name:               "OR",
@@ -133,7 +133,7 @@ type not struct {
 	*property
 }
 
-func NOT() *not {
+func newNOT() *not {
 	return &not{
 		&property{
 			name:               "NOT",
@@ -198,7 +198,7 @@ func buildAST(str []rune) (head *ast, err error) {
 		case "&":
 
 			if i < strL-1 && string(str[i+1]) == "&" {
-				exec.updateOpStack(AND())
+				exec.updateOpStack(newAND())
 			} else {
 				err = throwSyntaxErr(str, i)
 				return
@@ -208,7 +208,7 @@ func buildAST(str []rune) (head *ast, err error) {
 		case "|":
 
 			if i < strL-1 && string(str[i+1]) == "|" {
-				exec.updateOpStack(OR())
+				exec.updateOpStack(newOR())
 			} else {
 				err = throwSyntaxErr(str, i)
 				return
@@ -217,7 +217,7 @@ func buildAST(str []rune) (head *ast, err error) {
 
 		case "!":
 
-			exec.updateOpStack(NOT())
+			exec.updateOpStack(newNOT())
 			i++
 
 		case " ":
@@ -252,7 +252,7 @@ func buildAST(str []rune) (head *ast, err error) {
 				i++
 			}
 			isQuoted = false
-			exec.updateOpStack(Identifier(token))
+			exec.updateOpStack(newIdentifier(token))
 
 		}
 	}
@@ -280,7 +280,7 @@ type executor struct {
 func (exec *executor) updateOpStack(unit interface{}) {
 	switch exp := unit.(type) {
 	case *identifier:
-		exec.outputAST = append(exec.outputAST, AST(exp, nil))
+		exec.outputAST = append(exec.outputAST, newAST(exp, nil))
 		exec.checkUnary()
 	case *and, *or, *not:
 		exec.adjustByLogicOperator(exp.(logicOperator))
@@ -357,17 +357,18 @@ func (exec *executor) updateOutputAST() (ok bool) {
 	if num > 0 {
 		args = append(args, exec.outputAST[astL-num:astL]...)
 		exec.outputAST = exec.outputAST[:astL-num]
-		exec.outputAST = append(exec.outputAST, AST(lp, args))
+		exec.outputAST = append(exec.outputAST, newAST(lp, args))
 		return
 	}
-	exec.outputAST = append(exec.outputAST, AST(lp, nil))
+	exec.outputAST = append(exec.outputAST, newAST(lp, nil))
 	return
 }
 
 func throwSyntaxErr(str []rune, i int) error {
-	return errors.New(fmt.Sprintf(" Syntax Error at column %d: %s >>>%s<<<", i, string(str[int(math.Max(0, float64(i)-5)):i]), string(str[i])))
+	return fmt.Errorf(" Syntax Error at column %d: %s >>>%s<<<", i, string(str[int(math.Max(0, float64(i)-5)):i]), string(str[i]))
 }
 
+// Compile is main func in this package.
 func Compile(expRule string) (check func(string) bool, err error) {
 	headAst, err := buildAST(([]rune)(expRule))
 	if err != nil {
