@@ -122,7 +122,7 @@ func TestCompileMixedRule2(t *testing.T) {
 		t.Error(err)
 		return
 	}
-	target1 := "I am from USA, but I love China."
+	target1 := "I am from USA, but I want to travel to China."
 	t.Log("Matched by: ", target1)
 	t.Log("True is expected: ", check(target1))
 	target2 := "Japan is not in Africa, and neither is South Korea."
@@ -146,7 +146,7 @@ func TestCompileMixedRule3(t *testing.T) {
 		t.Error(err)
 		return
 	}
-	target1 := "I am from USA, but I love China."
+	target1 := "I am from USA, but I want to travel to China."
 	t.Log("Matched by: ", target1)
 	t.Log("True is expected: ", check(target1))
 	target2 := "I am from China, and I want to travel to Japan or Korea."
