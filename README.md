@@ -1,4 +1,6 @@
 # Easy_exp
+![example workflow](https://github.com/g-brick/easy_exp/actions/workflows/CI.yml/badge.svg)
+[![codecov](https://codecov.io/gh/g-brick/easy_exp/graph/badge.svg?token=EN0OVAR69A)](https://codecov.io/gh/g-brick/easy_exp)
 
 **Easy_exp** is a simplified version of regular expression matching rules.
 It has a simple syntax tree, and it was originally intended to make it easier for non-IT people
