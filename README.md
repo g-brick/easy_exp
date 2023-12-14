@@ -42,7 +42,7 @@ First you need to import easy_exp package for using easy_exp, one example :
 ```
         expRule := "John" // If some txt includes "John", it will be true
 	fmt.Printf("expRule: ", expRule)
-	check, err := Compile(expRule) // It will be build a matching rule
+	check, err := Compile(expRule) // Build a matching rule
 	if err != nil {
 		return
 	}
